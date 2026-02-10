@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900 bg-gray-50;
+  }
+}
+
+/* Custom Accessibility Filters */
+.access-high-contrast {
+  filter: contrast(1.5) brightness(1.2);
+}
+
+.access-grayscale {
+  filter: grayscale(1);
+}
+
+.access-protanopia {
+  filter: url('#protanopia-filter');
+}
+
+.access-deuteranopia {
+  filter: url('#deuteranopia-filter');
+}
+
+.access-tritanopia {
+  filter: url('#tritanopia-filter');
+}

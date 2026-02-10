@@ -1,0 +1,8 @@
+{
+  "name": "ShadowLight AI Assistant",
+  "description": "An advanced AI-powered web accessibility and navigation companion that provides smart summarization, content repurposing, and guided interactions.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

@@ -17,10 +17,11 @@ export const NavigateTab: React.FC<NavigateTabProps> = ({ currentPage, onStepAct
   const [steps, setSteps] = useState<NavStep[]>([]);
   const [activeStepId, setActiveStepId] = useState<string | null>(null);
   const [feedbackMode, setFeedbackMode] = useState(false);
+  const [isTourActive, setIsTourActive] = useState(false);
 
   // Auto-scan on page change if a tour is active
   useEffect(() => {
-    if (steps.length > 0 && !loading) {
+    if (isTourActive && steps.length > 0 && !loading) {
       console.log("Page changed during active tour, re-scanning...");
       handleStartTour();
     }
@@ -69,6 +70,7 @@ export const NavigateTab: React.FC<NavigateTabProps> = ({ currentPage, onStepAct
   const handleStartTour = async () => {
     if (!goal.trim()) return;
     setLoading(true);
+    setIsTourActive(true);
     setActiveStepId(null);
     onStepActivate(null);
 
@@ -113,6 +115,7 @@ export const NavigateTab: React.FC<NavigateTabProps> = ({ currentPage, onStepAct
 
   const handleCloseNavigation = () => {
     setSteps([]);
+    setIsTourActive(false);
     setActiveStepId(null);
     setGoal('');
     onStepActivate(null);

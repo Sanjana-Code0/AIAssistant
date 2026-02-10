@@ -10,10 +10,10 @@ function createOverlay() {
     overlay.style.cssText = `
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.5);
     z-index: 999998;
     pointer-events: none;
-    transition: opacity 0.5s;
+    transition: opacity 0.4s ease, clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
   `;
     document.body.appendChild(overlay);
@@ -21,12 +21,12 @@ function createOverlay() {
     spotlight = document.createElement('div');
     spotlight.style.cssText = `
     position: absolute;
-    border: 4px solid #FACC15;
+    border: 3px solid #38BDF8;
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.6), 0 0 0 2px rgba(56, 189, 248, 0.2);
     z-index: 999999;
     pointer-events: none;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: none;
   `;
     document.body.appendChild(spotlight);
@@ -98,12 +98,19 @@ chrome.runtime.onMessage.addListener((request: any, sender: any, sendResponse: a
             spotlight.style.width = `${rect.width + 8}px`;
             spotlight.style.height = `${rect.height + 8}px`;
 
+            // Create a "hole" in the overlay so the inside of the highlight isn't dimmed
+            const holePolygon = `polygon(0% 0%, 0% 100%, ${rect.left - 4}px 100%, ${rect.left - 4}px ${rect.top - 4}px, ${rect.right + 4}px ${rect.top - 4}px, ${rect.right + 4}px ${rect.bottom + 4}px, ${rect.left - 4}px ${rect.bottom + 4}px, ${rect.left - 4}px 100%, 100% 100%, 100% 0%)`;
+            overlay.style.clipPath = holePolygon;
+
             el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     }
 
     if (request.type === 'CLEAR_HIGHLIGHT') {
-        if (overlay) overlay.style.opacity = '0';
+        if (overlay) {
+            overlay.style.opacity = '0';
+            overlay.style.clipPath = 'none';
+        }
         if (spotlight) spotlight.style.display = 'none';
     }
 

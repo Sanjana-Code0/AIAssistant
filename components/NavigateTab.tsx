@@ -18,6 +18,14 @@ export const NavigateTab: React.FC<NavigateTabProps> = ({ currentPage, onStepAct
   const [activeStepId, setActiveStepId] = useState<string | null>(null);
   const [feedbackMode, setFeedbackMode] = useState(false);
 
+  // Auto-scan on page change if a tour is active
+  useEffect(() => {
+    if (steps.length > 0 && !loading) {
+      console.log("Page changed during active tour, re-scanning...");
+      handleStartTour();
+    }
+  }, [currentPage]);
+
   const handleStepActivate = async (step: NavStep | null, execute = false) => {
     setActiveStepId(step ? step.selector : null);
     onStepActivate(step);

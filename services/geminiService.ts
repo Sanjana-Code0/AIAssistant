@@ -75,12 +75,20 @@ export const generateNavGuide = async (goal: string, currentUrl: string, pageSch
       SCHEMA: ${pageSchema}
       
       Generate a precise, step-by-step navigation path as a JSON array.
+      
+      CRITICAL INSTRUCTIONS:
+      1. If the current page is a landing or search page, identify the link/button that leads to the specific goal.
+      2. If the current page is a form (like login, signup, or checkout), identify ALL necessary fields (inputs, buttons).
+      3. The instruction should be contextual. If the goal is login and we are on the login page, the first step should be entering the username.
+      4. If a step leads to a new page, set 'targetPage' to the expected URL or 'NEXT_PAGE'.
+
       EACH STEP MUST HAVE: 
       - selector: string (e.g., "#login-btn")
-      - instruction: string (e.g., "Click the login button")
+      - instruction: string (e.g., "Enter your email in the username field")
       - action: "click" | "type" | "hover"
-      - targetPage: string (current or next URL)
+      - targetPage: string (current URL, 'NEXT_PAGE', or expected URL)
       - confidenceScore: number (0-1)
+      - contextHint?: string (Helpful tip like "Found in the top-right header")
 
       RETURN ONLY A PLAIN JSON ARRAY. NO MARKDOWN. NO BACKTICKS.
     `;
